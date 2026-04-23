@@ -1,6 +1,10 @@
 package dev.matthiesen.common.cobblemon_escape_rope;
 
-import dev.architectury.event.events.common.TickEvent;
+import com.cobblemon.mod.common.api.Priority;
+import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
+import com.cobblemon.mod.common.platform.events.PlatformEvents;
+import com.cobblemon.mod.common.platform.events.ServerPlayerTickEvent;
+import com.cobblemon.mod.common.platform.events.ServerTickEvent;
 import dev.matthiesen.common.cobblemon_escape_rope.config.ConfigManager;
 import dev.matthiesen.common.cobblemon_escape_rope.config.ModConfig;
 import dev.matthiesen.common.cobblemon_escape_rope.data.CoordsHelper;
@@ -18,6 +22,8 @@ import java.util.Locale;
 public class CobblemonEscapeRope {
     public static ModConfig config;
     public static MinecraftServer currentServer;
+    public static ObservableSubscription<ServerTickEvent.Post> serverTickSubscription;
+    public static ObservableSubscription<ServerPlayerTickEvent.Post> playerTickSubscription;
 
     public static void initialize() {
         Constants.createInfoLog("Initialized");
@@ -51,7 +57,8 @@ public class CobblemonEscapeRope {
     public static void registerEvents() {
         // Server tick: decrement stored cooldowns for all online players in memory,
         // then flush to disk every serverSaveTicks ticks (configurable).
-        TickEvent.SERVER_POST.register(server -> {
+        serverTickSubscription = PlatformEvents.SERVER_TICK_POST.subscribe(Priority.NORMAL, event -> {
+            MinecraftServer server = event.getServer();
             int saveTicks = config != null ? config.serverSaveTicks : 20;
             PlayerCoordsData coordsData = CoordsHelper.get(server);
             boolean anyChanged = false;
@@ -78,10 +85,9 @@ public class CobblemonEscapeRope {
 
         // Player tick: update the saved "last safe outdoor position" every second, in memory only.
         // The server tick above handles periodic flushing to disk.
-        TickEvent.PLAYER_POST.register(player -> {
+        playerTickSubscription = PlatformEvents.SERVER_PLAYER_TICK_POST.subscribe(Priority.NORMAL, event -> {
+            ServerPlayer player = event.getPlayer();
             if (player.level().isClientSide || player.tickCount % 20 != 0) return;
-
-            ServerPlayer serverPlayer = (ServerPlayer) player;
             Level level = player.level();
             String currentDim = level.dimension().location().toString();
 
@@ -89,11 +95,11 @@ public class CobblemonEscapeRope {
                     && level.canSeeSky(player.blockPosition())
                     && !isDimensionBlacklisted(currentDim)) {
                 BlockPos currentPos = player.blockPosition();
-                PlayerCoordsData.DataStoreEntry data = DataUtil.getSavedPlayerData(serverPlayer);
+                PlayerCoordsData.DataStoreEntry data = DataUtil.getSavedPlayerData(player);
                 if (!currentPos.equals(data.pos) || !currentDim.equals(data.dimension)) {
                     data.pos = currentPos;
                     data.dimension = currentDim;
-                    DataUtil.setPlayerDataInMemory(serverPlayer, data);
+                    DataUtil.setPlayerDataInMemory(player, data);
                 }
             }
         });
@@ -104,6 +110,8 @@ public class CobblemonEscapeRope {
         if (currentServer != null) {
             CoordsHelper.get(currentServer).setDirty();
         }
+        serverTickSubscription.unsubscribe();
+        playerTickSubscription.unsubscribe();
         new ConfigManager().saveConfig();
     }
 }
