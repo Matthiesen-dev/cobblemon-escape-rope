@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModConfig {
+public class CobblemonEscapeRopeConfig {
     @SerializedName("serverSaveTicks")
     public int serverSaveTicks = 20;
 

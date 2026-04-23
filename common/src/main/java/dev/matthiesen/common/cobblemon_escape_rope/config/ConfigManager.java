@@ -11,10 +11,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 public class ConfigManager implements IConfigManager {
-    public static ModConfig config;
+    public static CobblemonEscapeRopeConfig config;
 
     @Override
-    public ModConfig loadConfig() {
+    public CobblemonEscapeRopeConfig loadConfig() {
         String configFileLoc = System.getProperty("user.dir") + File.separator + "config" +
                 File.separator + Constants.MOD_ID + File.separator + "config.json";
         Constants.createInfoLog("Loading config file found at: " + configFileLoc);
@@ -31,8 +31,8 @@ public class ConfigManager implements IConfigManager {
                 FileReader fileReader = new FileReader(configFile);
 
                 // Create a default config instance
-                ModConfig defaultConfig = new ModConfig();
-                String defaultConfigJson = ModConfig.GSON.toJson(defaultConfig);
+                CobblemonEscapeRopeConfig defaultConfig = new CobblemonEscapeRopeConfig();
+                String defaultConfigJson = CobblemonEscapeRopeConfig.GSON.toJson(defaultConfig);
 
                 JsonElement fileConfigElement = JsonParser.parseReader(fileReader);
 
@@ -46,10 +46,10 @@ public class ConfigManager implements IConfigManager {
                 );
 
                 // Deserialize the merged JsonElement back to PokemonToItemConfig
-                ModConfig finalConfig;
-                finalConfig = ModConfig.GSON.fromJson(
+                CobblemonEscapeRopeConfig finalConfig;
+                finalConfig = CobblemonEscapeRopeConfig.GSON.fromJson(
                         mergedConfigElement,
-                        ModConfig.class
+                        CobblemonEscapeRopeConfig.class
                 );
 
                 config = finalConfig;
@@ -58,10 +58,10 @@ public class ConfigManager implements IConfigManager {
             } catch (Exception e) {
                 Constants.createErrorLog("Failed to load the config! Using default config as fallback");
                 e.printStackTrace();
-                config = new ModConfig();
+                config = new CobblemonEscapeRopeConfig();
             }
         } else {
-            config = new ModConfig();
+            config = new CobblemonEscapeRopeConfig();
         }
 
         saveConfig();
@@ -104,7 +104,7 @@ public class ConfigManager implements IConfigManager {
             Constants.createInfoLog("Saving config to: " + configFileLoc);
             File configFile = new File(configFileLoc);
             FileWriter fileWriter = new FileWriter(configFile);
-            ModConfig.GSON.toJson(config, fileWriter);
+            CobblemonEscapeRopeConfig.GSON.toJson(config, fileWriter);
             fileWriter.flush();
             fileWriter.close();
         } catch (Exception e) {

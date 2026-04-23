@@ -6,8 +6,7 @@ import com.cobblemon.mod.common.platform.events.PlatformEvents;
 import com.cobblemon.mod.common.platform.events.ServerPlayerTickEvent;
 import com.cobblemon.mod.common.platform.events.ServerTickEvent;
 import dev.matthiesen.common.cobblemon_escape_rope.config.ConfigManager;
-import dev.matthiesen.common.cobblemon_escape_rope.config.ModConfig;
-import dev.matthiesen.common.cobblemon_escape_rope.data.CoordsHelper;
+import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeConfig;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
 import dev.matthiesen.common.cobblemon_escape_rope.items.ModItems;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CobblemonEscapeRope {
-    public static ModConfig config;
+    public static CobblemonEscapeRopeConfig config;
     public static MinecraftServer currentServer;
     public static ObservableSubscription<ServerTickEvent.Post> serverTickSubscription;
     public static ObservableSubscription<ServerPlayerTickEvent.Post> playerTickSubscription;
@@ -60,7 +59,7 @@ public class CobblemonEscapeRope {
         serverTickSubscription = PlatformEvents.SERVER_TICK_POST.subscribe(Priority.NORMAL, event -> {
             MinecraftServer server = event.getServer();
             int saveTicks = config != null ? config.serverSaveTicks : 20;
-            PlayerCoordsData coordsData = CoordsHelper.get(server);
+            PlayerCoordsData coordsData = DataUtil.getCoordsData(server);
             boolean anyChanged = false;
 
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -108,7 +107,7 @@ public class CobblemonEscapeRope {
     public static void onShutdown() {
         Constants.createInfoLog("Server stopping, shutting down");
         if (currentServer != null) {
-            CoordsHelper.get(currentServer).setDirty();
+            DataUtil.getCoordsData(currentServer).setDirty();
         }
         serverTickSubscription.unsubscribe();
         playerTickSubscription.unsubscribe();
