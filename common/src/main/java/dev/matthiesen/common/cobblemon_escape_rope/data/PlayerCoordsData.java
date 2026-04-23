@@ -33,6 +33,10 @@ public class PlayerCoordsData extends SavedData {
         this.setDirty();
     }
 
+    public void setDataInMemory(UUID playerUuid, DataStoreEntry data) {
+        playerCoords.put(playerUuid, data);
+    }
+
     public DataStoreEntry getData(UUID playerUuid) {
         return playerCoords.getOrDefault(playerUuid, new DataStoreEntry(new BlockPos(0, 0, 0), 0, "overworld"));
     }

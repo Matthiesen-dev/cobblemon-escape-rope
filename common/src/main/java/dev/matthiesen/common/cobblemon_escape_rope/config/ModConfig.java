@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModConfig {
+    @SerializedName("serverSaveTicks")
+    public int serverSaveTicks = 20;
+
     @SerializedName("escapeRopeItem")
     public EscapeRopeItemConfig escapeRopeItemConfig = new EscapeRopeItemConfig();
 

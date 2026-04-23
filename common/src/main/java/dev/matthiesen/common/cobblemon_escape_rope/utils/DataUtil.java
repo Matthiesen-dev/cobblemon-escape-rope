@@ -1,31 +1,33 @@
 package dev.matthiesen.common.cobblemon_escape_rope.utils;
 
+import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.data.CoordsHelper;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
 public final class DataUtil {
-    public static PlayerCoordsData.DataStoreEntry getSavedPlayerData(ServerPlayer player) {
-        ServerLevel level = player.serverLevel();
-        PlayerCoordsData data = CoordsHelper.get(level);
-        return data.getData(player.getUUID());
+    private static MinecraftServer server(ServerPlayer player) {
+        MinecraftServer s = player.getServer();
+        return s != null ? s : CobblemonEscapeRope.currentServer;
     }
 
-    public static void setPlayerData(ServerPlayer player, PlayerCoordsData.DataStoreEntry newData) {
-        ServerLevel level = player.serverLevel();
-        PlayerCoordsData data = CoordsHelper.get(level);
-        data.setData(player.getUUID(), newData);
+    public static PlayerCoordsData.DataStoreEntry getSavedPlayerData(ServerPlayer player) {
+        return CoordsHelper.get(server(player)).getData(player.getUUID());
+    }
+
+    public static void setPlayerDataInMemory(ServerPlayer player, PlayerCoordsData.DataStoreEntry newData) {
+        CoordsHelper.get(server(player)).setDataInMemory(player.getUUID(), newData);
     }
 
     public static void setCooldown(ServerPlayer player, int cooldown) {
-        ServerLevel level = player.serverLevel();
-        PlayerCoordsData data = CoordsHelper.get(level);
+        PlayerCoordsData data = CoordsHelper.get(server(player));
         PlayerCoordsData.DataStoreEntry entry = data.getData(player.getUUID());
-        data.setData(player.getUUID(), new PlayerCoordsData.DataStoreEntry(
-                entry.pos,
-                cooldown,
-                entry.dimension
-        ));
+        entry.cooldown = cooldown;
+        data.setData(player.getUUID(), entry);
     }
 }
+
+
+
+
