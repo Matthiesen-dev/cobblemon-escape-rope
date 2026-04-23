@@ -153,7 +153,7 @@ public class EscapeRopeItem extends Item {
 
         var standingBox = serverPlayer.getDimensions(Pose.STANDING)
                 .makeBoundingBox(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
-        return level.noCollision(serverPlayer, standingBox);
+        return level.noBlockCollision(serverPlayer, standingBox);
     }
 
     @Override
