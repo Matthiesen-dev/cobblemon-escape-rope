@@ -56,9 +56,9 @@ Default values:
   "serverSaveTicks": 20,
   "escapeRopeItem": {
     "cooldownInSeconds": 300,
-    "consumeOnUse": true,
+    "consumeOnUse": false,
     "useTimeInSeconds": 3,
-    "teleportSafeSearchRadius": 2,
+    "teleportSafeSearchRadius": 5,
     "blacklistedDimensions": []
   }
 }
@@ -71,9 +71,9 @@ Default values:
 ### `escapeRopeItem` settings:
 
 - `cooldownInSeconds`: Cooldown duration after using the rope. Default: 300 (5 minutes).
-- `consumeOnUse`: Whether to consume the rope item on use. Default: true.
+- `consumeOnUse`: Whether to consume the rope item on use. Default: false.
 - `useTimeInSeconds`: Time required to use the rope (hold right-click). Default: 3 seconds.
-- `teleportSafeSearchRadius`: Radius to search for a safe landing spot around the saved position. Default: 2 blocks or 5x5 area.
+- `teleportSafeSearchRadius`: Radius to search for a safe landing spot around the saved position. Default: 5 blocks.
 - `blacklistedDimensions` accepts dimension IDs (for example: `minecraft:the_nether`).
 
 Sample:

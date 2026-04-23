@@ -19,13 +19,13 @@ public class CobblemonEscapeRopeConfig {
         public int cooldownInSeconds = 300; // 5 minutes
 
         @SerializedName("consumeOnUse")
-        public boolean consumeOnUse = true;
+        public boolean consumeOnUse = false;
 
         @SerializedName("useTimeInSeconds")
         public int useTimeInSeconds = 3;
 
         @SerializedName("teleportSafeSearchRadius")
-        public int teleportSafeSearchRadius = 2;
+        public int teleportSafeSearchRadius = 5;
 
         @SerializedName("blacklistedDimensions")
         public List<String> blacklistedDimensions = new ArrayList<>();
