@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#0#",
+    "###"
+  ],
+  "key": {
+    "0": {
+      "item": "minecraft:ender_pearl"
+    },
+    "#": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "id": "cobblemon_escape_rope:escape_rope",
+    "count": 1
+  }
+}

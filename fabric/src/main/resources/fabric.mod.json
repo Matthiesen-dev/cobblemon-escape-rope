@@ -8,11 +8,11 @@
     "Adam Matthiesen"
   ],
   "license": "MIT License",
-  "icon": "assets/example/icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.matthiesen.fabric.cobblemon_escape_rope.FabricModExample"
+      "dev.matthiesen.fabric.cobblemon_escape_rope.CobblemonEscapeRopeFabric"
     ]
   },
   "depends": {

@@ -1,0 +1,12 @@
+{
+  "category.cobblemon_escape_rope.escape_rope_items_tab": "Cobblemon Escape Rope",
+  "item.cobblemon_escape_rope.escape_rope": "Escape Rope",
+  "cobblemon_escape_rope.tooltip.description": "Escape to the last place you saw the sky.",
+  "cobblemon_escape_rope.tooltip.cooldown_remaining": "Cooldown Remaining: %s",
+  "cobblemon_escape_rope.tooltip.cooldown_ready": "Cooldown: Ready",
+  "cobblemon_escape_rope.msg.wrong_dimension": "The rope feels cold and inert in this dimension...",
+  "cobblemon_escape_rope.msg.can_not_see_sky": "The rope cannot find a path to the sky!",
+  "cobblemon_escape_rope.msg.already_can_see_sky": "The rope goes slack. You are already under open sky.",
+  "cobblemon_escape_rope.msg.no_safe_destination": "The rope frays... there is no safe place to emerge nearby.",
+  "cobblemon_escape_rope.msg.dimension_blacklisted": "This dimension is blacklisted for Escape Rope usage."
+}
