@@ -1,1 +1,1 @@
-# template-cobblemon-sidemod
+# Cobblemon Escape Rope

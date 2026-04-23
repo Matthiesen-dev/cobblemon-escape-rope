@@ -1,10 +1,10 @@
-package dev.matthiesen.common.template_cobblemon_sidemod;
+package dev.matthiesen.common.cobblemon_escape_rope;
 
 import com.mojang.brigadier.CommandDispatcher;
-import dev.matthiesen.common.template_cobblemon_sidemod.commands.CommandRegistry;
-import dev.matthiesen.common.template_cobblemon_sidemod.config.ConfigManager;
-import dev.matthiesen.common.template_cobblemon_sidemod.config.ModConfig;
-import dev.matthiesen.common.template_cobblemon_sidemod.permissions.ModPermissions;
+import dev.matthiesen.common.cobblemon_escape_rope.commands.CommandRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.config.ConfigManager;
+import dev.matthiesen.common.cobblemon_escape_rope.config.ModConfig;
+import dev.matthiesen.common.cobblemon_escape_rope.permissions.ModPermissions;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

@@ -1,7 +1,7 @@
-package dev.matthiesen.fabric.template_cobblemon_sidemod;
+package dev.matthiesen.fabric.cobblemon_escape_rope;
 
-import dev.matthiesen.common.template_cobblemon_sidemod.CommonModExample;
-import dev.matthiesen.common.template_cobblemon_sidemod.Constants;
+import dev.matthiesen.common.cobblemon_escape_rope.CommonModExample;
+import dev.matthiesen.common.cobblemon_escape_rope.Constants;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

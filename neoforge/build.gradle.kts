@@ -43,6 +43,8 @@ dependencies {
     }
     shadowBundle(project(":common", configuration = "transformProductionNeoForge"))
 
+    modRuntimeOnly("dev.architectury:architectury-neoforge:${property("architectury_version")}") { isTransitive = false }
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${property("junit_version")}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${property("junit_version")}")
 }

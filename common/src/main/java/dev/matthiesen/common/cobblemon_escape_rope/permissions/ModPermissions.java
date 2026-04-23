@@ -1,9 +1,9 @@
-package dev.matthiesen.common.template_cobblemon_sidemod.permissions;
+package dev.matthiesen.common.cobblemon_escape_rope.permissions;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.permission.PermissionLevel;
-import dev.matthiesen.common.template_cobblemon_sidemod.CommonModExample;
-import dev.matthiesen.common.template_cobblemon_sidemod.Constants;
+import dev.matthiesen.common.cobblemon_escape_rope.CommonModExample;
+import dev.matthiesen.common.cobblemon_escape_rope.Constants;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 
