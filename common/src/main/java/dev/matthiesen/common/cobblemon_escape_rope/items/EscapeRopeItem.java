@@ -40,13 +40,13 @@ public class EscapeRopeItem extends Item {
     private static int teleportSearchRadius() { return getConfig().escapeRopeItemConfig.teleportSafeSearchRadius; }
 
     public EscapeRopeItem() {
-        super(new Item.Properties()
-                .stacksTo(16)
+        super(new Item.Properties().stacksTo(16)
                 .component(
                         DataComponents.CUSTOM_NAME,
                         Component.translatable("item.cobblemon_escape_rope.escape_rope")
                                 .withStyle(style ->
-                                        style.withColor(ChatFormatting.AQUA).withItalic(false)))
+                                        style.withColor(ChatFormatting.AQUA).withItalic(false))
+                )
         );
     }
 
