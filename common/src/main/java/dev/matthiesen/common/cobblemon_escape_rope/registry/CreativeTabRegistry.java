@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 public final class CreativeTabRegistry extends AbstractCreativeModeTabRegistry {
     private static final CreativeTabRegistry INSTANCE = new CreativeTabRegistry();
 
-    protected CreativeTabRegistry() {
+    private CreativeTabRegistry() {
         super(Constants.MOD_ID);
     }
 

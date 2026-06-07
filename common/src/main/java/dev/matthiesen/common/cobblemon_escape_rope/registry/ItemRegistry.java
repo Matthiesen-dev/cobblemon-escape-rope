@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 public final class ItemRegistry extends AbstractItemRegistry {
     private static final ItemRegistry INSTANCE = new ItemRegistry();
 
-    protected ItemRegistry() {
+    private ItemRegistry() {
         super(Constants.MOD_ID);
     }
 
