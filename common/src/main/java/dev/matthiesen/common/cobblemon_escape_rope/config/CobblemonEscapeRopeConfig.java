@@ -31,6 +31,7 @@ public class CobblemonEscapeRopeConfig {
         public List<String> blacklistedDimensions = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()

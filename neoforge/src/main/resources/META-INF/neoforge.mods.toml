@@ -11,7 +11,7 @@ authors = "${mod_author}"
 description = '''
 ${mod_description}
 '''
-#logoFile = ""
+logoFile = "icon.png"
 
 [[dependencies.${mod_id}]]
 modId = "minecraft"
@@ -31,5 +31,19 @@ side = "BOTH"
 modId = "cobblemon"
 mandatory = true
 versionRange = "[1.7.3,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "matthiesen_lib_api"
+mandatory = true
+versionRange = "[1.5.5,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "matthiesen_lib"
+mandatory = true
+versionRange = "[1.5.5,)"
 ordering = "AFTER"
 side = "BOTH"

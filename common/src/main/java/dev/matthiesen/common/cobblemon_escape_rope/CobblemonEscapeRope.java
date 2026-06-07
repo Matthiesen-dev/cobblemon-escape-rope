@@ -1,37 +1,42 @@
 package dev.matthiesen.common.cobblemon_escape_rope;
 
-import com.cobblemon.mod.common.api.Priority;
-import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
-import com.cobblemon.mod.common.platform.events.PlatformEvents;
-import com.cobblemon.mod.common.platform.events.ServerPlayerTickEvent;
-import com.cobblemon.mod.common.platform.events.ServerTickEvent;
-import dev.matthiesen.common.cobblemon_escape_rope.config.ConfigManager;
 import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeConfig;
-import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
-import dev.matthiesen.common.cobblemon_escape_rope.items.ModItems;
-import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
+import dev.matthiesen.common.cobblemon_escape_rope.config.EscapeRopeConfigManager;
+import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.CobblemonPlatformEvents;
+import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.ServerEvents;
+import dev.matthiesen.common.cobblemon_escape_rope.items.CreativeTabRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.items.ItemRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.MetricManager;
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
 
 import java.util.List;
 import java.util.Locale;
 
 public class CobblemonEscapeRope {
-    public static CobblemonEscapeRopeConfig config;
-    public static MinecraftServer currentServer;
-    public static ObservableSubscription<ServerTickEvent.Post> serverTickSubscription;
-    public static ObservableSubscription<ServerPlayerTickEvent.Post> playerTickSubscription;
+    private static final EscapeRopeConfigManager<CobblemonEscapeRopeConfig> CONFIG_MANAGER =
+            new EscapeRopeConfigManager<>(CobblemonEscapeRopeConfig.class, "config");
+
+    public static CobblemonEscapeRopeConfig getConfig() {
+        return CONFIG_MANAGER.getConfig();
+    }
 
     public static void initialize() {
+        reload();
+        MetricManager.ready();
+        ItemRegistry.init();
+        CreativeTabRegistry.init();
+        MatthiesenLib.registerServerEventHandler(Constants.MOD_ID, new ServerEvents());
+        MatthiesenLib.registerReloadRunnable(Constants.MOD_ID, CobblemonEscapeRope::reload);
+        CobblemonPlatformEvents.init();
         Constants.createInfoLog("Initialized");
-        config = new ConfigManager().loadConfig();
-        ModItems.init();
-        registerEvents();
+    }
+
+    public static void reload() {
+        CONFIG_MANAGER.loadConfig();
     }
 
     public static boolean isDimensionBlacklisted(String dimensionId) {
+        var config = getConfig();
         if (dimensionId == null || dimensionId.isBlank() || config == null || config.escapeRopeItemConfig == null) {
             return false;
         }
@@ -46,72 +51,6 @@ public class CobblemonEscapeRope {
                 .filter(id -> id != null && !id.isBlank())
                 .map(id -> id.trim().toLowerCase(Locale.ROOT))
                 .anyMatch(normalizedDimensionId::equals);
-    }
-
-    public static void onStartup(MinecraftServer server) {
-        Constants.createInfoLog("Server starting, Setting up");
-        currentServer = server;
-    }
-
-    public static void registerEvents() {
-        // Server tick: decrement stored cooldowns for all online players in memory,
-        // then flush to disk every serverSaveTicks ticks (configurable).
-        serverTickSubscription = PlatformEvents.SERVER_TICK_POST.subscribe(Priority.NORMAL, event -> {
-            MinecraftServer server = event.getServer();
-            int saveTicks = config != null ? config.serverSaveTicks : 20;
-            PlayerCoordsData coordsData = DataUtil.getCoordsData(server);
-            boolean anyChanged = false;
-
-            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                PlayerCoordsData.DataStoreEntry data = coordsData.getData(player.getUUID());
-
-                if (data.cooldown > 0) {
-                    // Re-sync item cooldown if it was lost (e.g. after relog).
-                    if (!player.getCooldowns().isOnCooldown(ModItems.ESCAPE_ROPE.get())) {
-                        player.getCooldowns().addCooldown(ModItems.ESCAPE_ROPE.get(), data.cooldown);
-                    }
-                    data.cooldown--;
-                    coordsData.setDataInMemory(player.getUUID(), data);
-                    anyChanged = true;
-                }
-            }
-
-            // Flush in-memory changes to disk on the configured interval.
-            if (anyChanged && server.getTickCount() % saveTicks == 0) {
-                coordsData.setDirty();
-            }
-        });
-
-        // Player tick: update the saved "last safe outdoor position" every second, in memory only.
-        // The server tick above handles periodic flushing to disk.
-        playerTickSubscription = PlatformEvents.SERVER_PLAYER_TICK_POST.subscribe(Priority.NORMAL, event -> {
-            ServerPlayer player = event.getPlayer();
-            if (player.level().isClientSide || player.tickCount % 20 != 0) return;
-            Level level = player.level();
-            String currentDim = level.dimension().location().toString();
-
-            if (level.dimensionType().hasSkyLight()
-                    && level.canSeeSky(player.blockPosition())
-                    && !isDimensionBlacklisted(currentDim)) {
-                BlockPos currentPos = player.blockPosition();
-                PlayerCoordsData.DataStoreEntry data = DataUtil.getSavedPlayerData(player);
-                if (!currentPos.equals(data.pos) || !currentDim.equals(data.dimension)) {
-                    data.pos = currentPos;
-                    data.dimension = currentDim;
-                    DataUtil.setPlayerDataInMemory(player, data);
-                }
-            }
-        });
-    }
-
-    public static void onShutdown() {
-        Constants.createInfoLog("Server stopping, shutting down");
-        if (currentServer != null) {
-            DataUtil.getCoordsData(currentServer).setDirty();
-        }
-        serverTickSubscription.unsubscribe();
-        playerTickSubscription.unsubscribe();
-        new ConfigManager().saveConfig();
     }
 }
 

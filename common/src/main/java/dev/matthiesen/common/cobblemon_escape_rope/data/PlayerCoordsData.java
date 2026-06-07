@@ -41,6 +41,7 @@ public class PlayerCoordsData extends SavedData {
         return playerCoords.getOrDefault(playerUuid, new DataStoreEntry(new BlockPos(0, 0, 0), 0, "minecraft:overworld"));
     }
 
+    @SuppressWarnings("unused")
     public static PlayerCoordsData load(CompoundTag nbt, HolderLookup.Provider registries) {
         PlayerCoordsData data = new PlayerCoordsData();
         ListTag list = nbt.getList("coords", Tag.TAG_COMPOUND);
