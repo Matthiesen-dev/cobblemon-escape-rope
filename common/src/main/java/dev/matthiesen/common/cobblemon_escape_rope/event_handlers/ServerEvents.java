@@ -5,7 +5,7 @@ import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
 import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibServerEventHandler;
 import net.minecraft.server.MinecraftServer;
 
-public class ServerEvents implements MatthiesenLibServerEventHandler {
+public final class ServerEvents implements MatthiesenLibServerEventHandler {
     @Override
     public void onServerStart(MinecraftServer server) {
         Constants.createInfoLog("Server starting, Setting up");

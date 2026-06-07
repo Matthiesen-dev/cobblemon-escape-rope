@@ -6,7 +6,7 @@ import dev.matthiesen.common.matthiesen_lib_api.core.MatthiesenLibApiMetricsMana
 import dev.matthiesen.common.matthiesen_lib_api.core.metric.UniversalMetricContext;
 import dev.matthiesen.libs.faststats.ErrorTracker;
 
-public class MetricManager {
+public final class MetricManager {
     public static final ErrorTracker ERROR_TRACKER = MatthiesenLibApiMetricsManager.getErrorTracker();
 
     @SuppressWarnings("unused")

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
-public class Constants {
+public final class Constants {
     public static final String MOD_ID = "cobblemon_escape_rope";
     public static final String ModName = "Cobblemon Escape Rope";
     public static @Token final String METRICS_TOKEN = "bb6f2545505c4c133b504e1db61c184e";

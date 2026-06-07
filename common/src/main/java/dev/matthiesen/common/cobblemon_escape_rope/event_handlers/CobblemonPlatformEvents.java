@@ -8,13 +8,14 @@ import com.cobblemon.mod.common.platform.events.ServerTickEvent;
 import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
 import dev.matthiesen.common.cobblemon_escape_rope.registry.ItemRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.Blacklist;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
-public class CobblemonPlatformEvents {
+public final class CobblemonPlatformEvents {
     private static ObservableSubscription<ServerTickEvent.Post> serverTickSubscription;
     private static ObservableSubscription<ServerPlayerTickEvent.Post> playerTickSubscription;
 
@@ -58,7 +59,7 @@ public class CobblemonPlatformEvents {
 
             if (playerLevel.dimensionType().hasSkyLight()
                     && playerLevel.canSeeSky(player.blockPosition())
-                    && !CobblemonEscapeRope.isDimensionBlacklisted(currentDim)) {
+                    && !Blacklist.isDimensionBlacklisted(currentDim)) {
                 BlockPos currentPos = player.blockPosition();
                 PlayerCoordsData.DataStoreEntry data = DataUtil.getSavedPlayerData(player);
                 if (!currentPos.equals(data.pos) || !currentDim.equals(data.dimension)) {

@@ -4,7 +4,7 @@ import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.Constants;
 import net.fabricmc.api.ModInitializer;
 
-public class CobblemonEscapeRopeFabric implements ModInitializer {
+public final class CobblemonEscapeRopeFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {

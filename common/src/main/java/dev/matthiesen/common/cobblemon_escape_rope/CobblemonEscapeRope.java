@@ -9,10 +9,7 @@ import dev.matthiesen.common.cobblemon_escape_rope.registry.ItemRegistry;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.MetricManager;
 import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
 
-import java.util.List;
-import java.util.Locale;
-
-public class CobblemonEscapeRope {
+public final class CobblemonEscapeRope {
     private static final EscapeRopeConfigManager<CobblemonEscapeRopeConfig> CONFIG_MANAGER =
             new EscapeRopeConfigManager<>(CobblemonEscapeRopeConfig.class, "config");
 
@@ -33,24 +30,6 @@ public class CobblemonEscapeRope {
 
     public static void reload() {
         CONFIG_MANAGER.loadConfig();
-    }
-
-    public static boolean isDimensionBlacklisted(String dimensionId) {
-        var config = getConfig();
-        if (dimensionId == null || dimensionId.isBlank() || config == null || config.escapeRopeItemConfig == null) {
-            return false;
-        }
-
-        List<String> blacklist = config.escapeRopeItemConfig.blacklistedDimensions;
-        if (blacklist == null || blacklist.isEmpty()) {
-            return false;
-        }
-
-        String normalizedDimensionId = dimensionId.trim().toLowerCase(Locale.ROOT);
-        return blacklist.stream()
-                .filter(id -> id != null && !id.isBlank())
-                .map(id -> id.trim().toLowerCase(Locale.ROOT))
-                .anyMatch(normalizedDimensionId::equals);
     }
 }
 

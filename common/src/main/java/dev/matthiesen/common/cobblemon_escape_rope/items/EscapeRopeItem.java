@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.CobblemonSounds;
 import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeConfig;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.Blacklist;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.ChatFormatting;
@@ -31,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Locale;
 
-public class EscapeRopeItem extends Item {
+public final class EscapeRopeItem extends Item {
     private static CobblemonEscapeRopeConfig getConfig() {
         return CobblemonEscapeRope.getConfig();
     }
@@ -92,7 +93,7 @@ public class EscapeRopeItem extends Item {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             String currentDim = level.dimension().location().toString();
 
-            if (CobblemonEscapeRope.isDimensionBlacklisted(currentDim)) {
+            if (Blacklist.isDimensionBlacklisted(currentDim)) {
                 player.displayClientMessage(Component.translatable("cobblemon_escape_rope.msg.dimension_blacklisted").withStyle(ChatFormatting.RED), true);
                 level.playSound(null, player.blockPosition(), CobblemonSounds.POKE_BALL_HIT, SoundSource.PLAYERS, 1.0F, 1.0F);
                 return stack;

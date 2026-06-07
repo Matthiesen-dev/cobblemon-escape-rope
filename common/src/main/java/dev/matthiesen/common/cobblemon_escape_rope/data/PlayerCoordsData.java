@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class PlayerCoordsData extends SavedData {
+public final class PlayerCoordsData extends SavedData {
     public static class DataStoreEntry {
         public BlockPos pos;
         public int cooldown;
