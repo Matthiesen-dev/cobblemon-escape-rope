@@ -1,5 +1,11 @@
 # Cobblemon Escape Rope
 
+<div>
+  <img src="https://mods.matthiesen.dev/badges/matthiesenLibAPI.svg" alt="Matthiesen Lib API">
+  <img src="https://mods.matthiesen.dev/badges/matthiesenLib.svg" alt="Matthiesen Lib">
+  <img src="https://mods.matthiesen.dev/badges/cobblemon.svg" alt="Cobblemon">
+</div>
+
 A lightweight Cobblemon add-on that adds an **Escape Rope** item for returning to the last safe place where you were under open sky.
 
 ## What it does
@@ -13,83 +19,19 @@ A lightweight Cobblemon add-on that adds an **Escape Rope** item for returning t
 ## Requirements
 
 - [Cobblemon 1.7.3+1.21.1](https://modrinth.com/mod/cobblemon)
-- [Architectury API for 1.21.1](https://modrinth.com/mod/architectury-api)
+- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
+- [Matthiesen Lib](https://modrinth.com/mod/matthiesen-lib)
 
-## Usage
+## Docs
 
-- Get the item from the creative tab **Cobblemon Escape Rope**, craft it in survival, or with:
-  - `/give @p cobblemon_escape_rope:escape_rope`
-- Hold right-click to charge the rope.
-- If you are underground/in a valid dimension, you are teleported to your last recorded open-sky position.
+Documentation for this mod can be found at [mods.matthiesen.dev](https://mods.matthiesen.dev/cobblemon-escape-rope/)
 
-### Crafting
+## Version Compatibility
 
-Shaped recipe (3x3):
+| Minecraft Version | Mod Version |
+|-------------------|-------------|
+| 1.21.1            | 1.x.x       |
 
-```text
-S S S
-S E S
-S S S
-```
+## License
 
-- `S` = `minecraft:string`
-- `E` = `minecraft:ender_pearl`
-- Output: `cobblemon_escape_rope:escape_rope` x1
-
-### Teleport behavior
-
-- Works only if your current dimension matches the saved dimension.
-- If you are already under open sky, the rope cancels and notifies you.
-- If no safe landing position is found near the saved location, teleport is canceled.
-- If your current dimension is in `blacklistedDimensions`, the rope cannot be used.
-
-## Configuration
-
-A config file is generated automatically at:
-
-- `config/cobblemon_escape_rope/config.json`
-
-Default values:
-
-```json
-{
-  "serverSaveTicks": 20,
-  "escapeRopeItem": {
-    "cooldownInSeconds": 300,
-    "consumeOnUse": false,
-    "useTimeInSeconds": 3,
-    "teleportSafeSearchRadius": 5,
-    "blacklistedDimensions": []
-  }
-}
-```
-
-### Top-level settings:
-
-- `serverSaveTicks`: How often (in ticks) to save player positions to disk. Default: 20 (1 second).
-
-### `escapeRopeItem` settings:
-
-- `cooldownInSeconds`: Cooldown duration after using the rope. Default: 300 (5 minutes).
-- `consumeOnUse`: Whether to consume the rope item on use. Default: false.
-- `useTimeInSeconds`: Time required to use the rope (hold right-click). Default: 3 seconds.
-- `teleportSafeSearchRadius`: Radius to search for a safe landing spot around the saved position. Default: 5 blocks.
-- `blacklistedDimensions` accepts dimension IDs (for example: `minecraft:the_nether`).
-
-Sample:
-
-```json
-{
-  "escapeRopeItem": {
-    "blacklistedDimensions": [
-      "minecraft:the_nether",
-      "minecraft:the_end"
-    ]
-  }
-}
-```
-
-When a dimension is blacklisted:
-
-- Escape Rope use is blocked in that dimension.
-- Open-sky return positions are not updated while you are in that dimension.
+MIT - see `LICENSE`.
