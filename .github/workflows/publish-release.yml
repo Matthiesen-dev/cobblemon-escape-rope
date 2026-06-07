@@ -1,7 +1,6 @@
 name: Publish Release to Modrinth
 
 # Minimum Required Secrets:
-# - GITHUB_TOKEN (automatically provided by GitHub)
 # - MODRINTH_TOKEN (Modrinth API token with permissions to create versions)
 # - MODRINTH_ID (The ID of the Modrinth project to publish to)
 # - DISCORD_WEBHOOK_URL (The URL of the Discord webhook to send notifications to)
