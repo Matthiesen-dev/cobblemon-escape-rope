@@ -4,8 +4,8 @@ import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeCon
 import dev.matthiesen.common.cobblemon_escape_rope.config.EscapeRopeConfigManager;
 import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.CobblemonPlatformEvents;
 import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.ServerEvents;
-import dev.matthiesen.common.cobblemon_escape_rope.items.CreativeTabRegistry;
-import dev.matthiesen.common.cobblemon_escape_rope.items.ItemRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.registry.CreativeTabRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.registry.ItemRegistry;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.MetricManager;
 import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
 

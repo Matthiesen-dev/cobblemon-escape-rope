@@ -7,7 +7,7 @@ import com.cobblemon.mod.common.platform.events.ServerPlayerTickEvent;
 import com.cobblemon.mod.common.platform.events.ServerTickEvent;
 import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
-import dev.matthiesen.common.cobblemon_escape_rope.items.ItemRegistry;
+import dev.matthiesen.common.cobblemon_escape_rope.registry.ItemRegistry;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;

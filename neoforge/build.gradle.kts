@@ -38,8 +38,6 @@ dependencies {
     }
     shadowBundle(project(":common", configuration = "transformProductionNeoForge"))
 
-    modRuntimeOnly("dev.architectury:architectury-neoforge:${property("architectury_version")}") { isTransitive = false }
-
     testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
 }

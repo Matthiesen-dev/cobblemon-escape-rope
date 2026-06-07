@@ -1,4 +1,4 @@
-package dev.matthiesen.common.cobblemon_escape_rope.items;
+package dev.matthiesen.common.cobblemon_escape_rope.registry;
 
 import dev.matthiesen.common.cobblemon_escape_rope.Constants;
 import dev.matthiesen.common.matthiesen_lib.registry.AbstractCreativeModeTabRegistry;

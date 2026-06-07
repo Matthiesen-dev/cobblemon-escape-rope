@@ -13,8 +13,6 @@ dependencies {
     mappings(loom.officialMojangMappings())
     modImplementation(libs.bundles.commonModImplementation) { isTransitive = false }
 
-    modApi("dev.architectury:architectury:${property("architectury_version")}") { isTransitive = false }
-
     testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
 }
