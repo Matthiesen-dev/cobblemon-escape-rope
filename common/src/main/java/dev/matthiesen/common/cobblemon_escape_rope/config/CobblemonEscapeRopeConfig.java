@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CobblemonEscapeRopeConfig {
+public final class CobblemonEscapeRopeConfig {
     @SerializedName("serverSaveTicks")
     public int serverSaveTicks = 20;
 
@@ -31,6 +31,7 @@ public class CobblemonEscapeRopeConfig {
         public List<String> blacklistedDimensions = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()

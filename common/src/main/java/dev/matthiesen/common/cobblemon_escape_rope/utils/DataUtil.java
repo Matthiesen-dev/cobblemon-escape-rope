@@ -1,8 +1,8 @@
 package dev.matthiesen.common.cobblemon_escape_rope.utils;
 
-import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.Constants;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
+import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -23,7 +23,7 @@ public final class DataUtil {
 
     private static MinecraftServer server(ServerPlayer player) {
         MinecraftServer s = player.getServer();
-        return s != null ? s : CobblemonEscapeRope.currentServer;
+        return s != null ? s : MatthiesenLib.getMinecraftServer();
     }
 
     public static PlayerCoordsData.DataStoreEntry getSavedPlayerData(ServerPlayer player) {

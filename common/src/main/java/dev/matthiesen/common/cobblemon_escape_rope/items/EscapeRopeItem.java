@@ -2,12 +2,15 @@ package dev.matthiesen.common.cobblemon_escape_rope.items;
 
 import com.cobblemon.mod.common.CobblemonSounds;
 import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
+import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeConfig;
 import dev.matthiesen.common.cobblemon_escape_rope.data.PlayerCoordsData;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.Blacklist;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.DataUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -29,13 +32,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Locale;
 
-public class EscapeRopeItem extends Item {
-    private static int cooldownTicks() { return 20 * CobblemonEscapeRope.config.escapeRopeItemConfig.cooldownInSeconds; }
-    private static int useDuration() { return 20 * CobblemonEscapeRope.config.escapeRopeItemConfig.useTimeInSeconds; }
-    private static int teleportSearchRadius() { return CobblemonEscapeRope.config.escapeRopeItemConfig.teleportSafeSearchRadius; }
+public final class EscapeRopeItem extends Item {
+    private static CobblemonEscapeRopeConfig getConfig() {
+        return CobblemonEscapeRope.getConfig();
+    }
+    private static int cooldownTicks() { return 20 * getConfig().escapeRopeItemConfig.cooldownInSeconds; }
+    private static int useDuration() { return 20 * getConfig().escapeRopeItemConfig.useTimeInSeconds; }
+    private static int teleportSearchRadius() { return getConfig().escapeRopeItemConfig.teleportSafeSearchRadius; }
 
-    public EscapeRopeItem(Properties properties) {
-        super(properties);
+    public EscapeRopeItem() {
+        super(new Item.Properties().stacksTo(16)
+                .component(
+                        DataComponents.CUSTOM_NAME,
+                        Component.translatable("item.cobblemon_escape_rope.escape_rope")
+                                .withStyle(style ->
+                                        style.withColor(ChatFormatting.AQUA).withItalic(false))
+                )
+        );
     }
 
     @Override
@@ -80,7 +93,7 @@ public class EscapeRopeItem extends Item {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             String currentDim = level.dimension().location().toString();
 
-            if (CobblemonEscapeRope.isDimensionBlacklisted(currentDim)) {
+            if (Blacklist.isDimensionBlacklisted(currentDim)) {
                 player.displayClientMessage(Component.translatable("cobblemon_escape_rope.msg.dimension_blacklisted").withStyle(ChatFormatting.RED), true);
                 level.playSound(null, player.blockPosition(), CobblemonSounds.POKE_BALL_HIT, SoundSource.PLAYERS, 1.0F, 1.0F);
                 return stack;
@@ -114,7 +127,7 @@ public class EscapeRopeItem extends Item {
                 player.getCooldowns().addCooldown(this, cooldownTicks());
 
                 if (!player.getAbilities().instabuild &&
-                        CobblemonEscapeRope.config.escapeRopeItemConfig.consumeOnUse) stack.shrink(1);
+                        getConfig().escapeRopeItemConfig.consumeOnUse) stack.shrink(1);
             } else {
                 String error = !level.dimensionType().hasSkyLight()
                         ? "cobblemon_escape_rope.msg.wrong_dimension"
