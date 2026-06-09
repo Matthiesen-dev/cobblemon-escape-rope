@@ -1,32 +1,36 @@
 package dev.matthiesen.common.cobblemon_escape_rope.utils;
 
-import com.cobblemon.mod.common.ResourcePackActivationBehaviour;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 
-public class ResourcePackDef {
-    private final String id;
-    private final String name;
-    private final PackType packType;
-    private final ResourcePackActivationBehaviour activationBehaviour;
-    private final Component displayName;
-
+public record ResourcePackDef(String id, Component displayName, PackType packType,
+                              ResourcePackActivationBehaviour activationBehaviour) {
     public ResourcePackDef(
             String id,
-            String name,
+            String displayName,
             PackType packType,
             ResourcePackActivationBehaviour activationBehaviour
     ) {
-        this.id = id;
-        this.name = name;
-        this.packType = packType;
-        this.activationBehaviour = activationBehaviour;
-        this.displayName = Component.literal(name);
+        this(id, Component.literal(displayName), packType, activationBehaviour);
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public PackType getPackType() { return packType; }
-    public ResourcePackActivationBehaviour getActivationBehaviour() { return activationBehaviour; }
-    public Component getDisplayName() { return displayName; }
+
+    public enum ResourcePackActivationBehaviour {
+
+        /**
+         * The resource pack will start disabled.
+         */
+        NORMAL,
+
+        /**
+         * The resource pack will start enabled.
+         */
+        DEFAULT_ENABLED,
+
+        /**
+         * The resource pack will always be enabled.
+         * The user can reorder it but cannot remove it.
+         */
+        ALWAYS_ENABLED
+    }
 }

@@ -1,8 +1,8 @@
 package dev.matthiesen.neoforge.cobblemon_escape_rope;
 
-import com.cobblemon.mod.common.ResourcePackActivationBehaviour;
 import dev.matthiesen.common.cobblemon_escape_rope.CobblemonEscapeRope;
 import dev.matthiesen.common.cobblemon_escape_rope.Constants;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.ResourcePackDef;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -37,10 +37,10 @@ public final class CobblemonEscapeRopeNeoForge {
 
         var modFile = optionalModContainer.get().getModInfo();
         CobblemonEscapeRope.BuiltInResourcePacks
-                .stream().filter(rp -> rp.getPackType() == event.getPackType())
+                .stream().filter(rp -> rp.packType() == event.getPackType())
                 .forEach(rp -> {
-                    var subPath = (rp.getPackType() == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks");
-                    var packLocation = Constants.modResource(subPath + "/" + rp.getId());
+                    var subPath = (rp.packType() == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks");
+                    var packLocation = Constants.modResource(subPath + "/" + rp.id());
                     var resourcePath = modFile.getOwningFile().getFile().findResource(packLocation.getPath());
 
                     var version = modFile.getVersion();
@@ -48,21 +48,21 @@ public final class CobblemonEscapeRopeNeoForge {
                     var pack = Pack.readMetaAndCreate(
                             new PackLocationInfo(
                                     "mod/" + packLocation,
-                                    rp.getDisplayName(),
+                                    rp.displayName(),
                                     PackSource.BUILT_IN,
                                     Optional.of(new KnownPack("neoforge", "mod/$packLocation", version.toString()))
                             ),
                             BuiltInPackSource.fromName((info) -> new PathPackResources(info, resourcePath)),
-                            rp.getPackType(),
+                            rp.packType(),
                             new PackSelectionConfig(
-                                    rp.getActivationBehaviour() == ResourcePackActivationBehaviour.ALWAYS_ENABLED,
+                                    rp.activationBehaviour() == ResourcePackDef.ResourcePackActivationBehaviour.ALWAYS_ENABLED,
                                     Pack.Position.TOP,
                                     false
                             )
                     );
 
                     if (pack == null) {
-                        Constants.createInfoLog("Failed to load built-in resource pack: " + rp.getId());
+                        Constants.createInfoLog("Failed to load built-in resource pack: " + rp.id());
                         return;
                     }
 

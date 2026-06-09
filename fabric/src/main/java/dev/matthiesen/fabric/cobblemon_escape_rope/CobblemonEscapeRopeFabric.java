@@ -18,22 +18,22 @@ public final class CobblemonEscapeRopeFabric implements ModInitializer {
 
         CobblemonEscapeRope.BuiltInResourcePacks
                 .forEach(rp -> {
-                    Constants.createInfoLog("Registering built-in resource pack: " + rp.getDisplayName());
+                    Constants.createInfoLog("Registering built-in resource pack: " + rp.displayName());
                     var optionalModContainer = FabricLoader.getInstance().getModContainer(Constants.MOD_ID);
                     if (optionalModContainer.isEmpty()) {
                         Constants.createErrorLog("Couldn't find mod container for mod id: " + Constants.MOD_ID);
                         return;
                     }
                     var mod = optionalModContainer.get();
-                    var resourcePackActivationType = switch (rp.getActivationBehaviour()) {
+                    var resourcePackActivationType = switch (rp.activationBehaviour()) {
                         case NORMAL -> ResourcePackActivationType.NORMAL;
                         case DEFAULT_ENABLED -> ResourcePackActivationType.DEFAULT_ENABLED;
                         case ALWAYS_ENABLED -> ResourcePackActivationType.ALWAYS_ENABLED;
                     };
-                    var id = Constants.modResource(rp.getId());
-                    String subPath = (rp.getPackType() == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks") + "/" + id.getPath();
+                    var id = Constants.modResource(rp.id());
+                    String subPath = (rp.packType() == PackType.CLIENT_RESOURCES ? "resourcepacks" : "datapacks") + "/" + id.getPath();
 
-                    ResourceManagerHelperImpl.registerBuiltinResourcePack(id, subPath, mod, rp.getDisplayName(), resourcePackActivationType);
+                    ResourceManagerHelperImpl.registerBuiltinResourcePack(id, subPath, mod, rp.displayName(), resourcePackActivationType);
                 });
     }
 

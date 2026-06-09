@@ -1,6 +1,5 @@
 package dev.matthiesen.common.cobblemon_escape_rope;
 
-import com.cobblemon.mod.common.ResourcePackActivationBehaviour;
 import dev.matthiesen.common.cobblemon_escape_rope.config.CobblemonEscapeRopeConfig;
 import dev.matthiesen.common.cobblemon_escape_rope.config.EscapeRopeConfigManager;
 import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.CobblemonPlatformEvents;
@@ -23,7 +22,7 @@ public final class CobblemonEscapeRope {
     }
 
     public static final List<ResourcePackDef> BuiltInResourcePacks = List.of(
-            new ResourcePackDef("legacyitemmodel", "Legacy Item Model", PackType.CLIENT_RESOURCES, ResourcePackActivationBehaviour.NORMAL)
+            new ResourcePackDef("legacyitemmodel", "Legacy Item Model", PackType.CLIENT_RESOURCES, ResourcePackDef.ResourcePackActivationBehaviour.NORMAL)
     );
 
     public static void initialize() {
