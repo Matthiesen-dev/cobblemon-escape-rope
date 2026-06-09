@@ -7,7 +7,11 @@ import dev.matthiesen.common.cobblemon_escape_rope.event_handlers.ServerEvents;
 import dev.matthiesen.common.cobblemon_escape_rope.registry.CreativeTabRegistry;
 import dev.matthiesen.common.cobblemon_escape_rope.registry.ItemRegistry;
 import dev.matthiesen.common.cobblemon_escape_rope.utils.MetricManager;
+import dev.matthiesen.common.cobblemon_escape_rope.utils.ResourcePackDef;
 import dev.matthiesen.common.matthiesen_lib.MatthiesenLib;
+import net.minecraft.server.packs.PackType;
+
+import java.util.List;
 
 public final class CobblemonEscapeRope {
     private static final EscapeRopeConfigManager<CobblemonEscapeRopeConfig> CONFIG_MANAGER =
@@ -16,6 +20,10 @@ public final class CobblemonEscapeRope {
     public static CobblemonEscapeRopeConfig getConfig() {
         return CONFIG_MANAGER.getConfig();
     }
+
+    public static final List<ResourcePackDef> BuiltInResourcePacks = List.of(
+            new ResourcePackDef("legacyitemmodel", "Legacy Item Model", PackType.CLIENT_RESOURCES, ResourcePackDef.ResourcePackActivationBehaviour.NORMAL)
+    );
 
     public static void initialize() {
         reload();
