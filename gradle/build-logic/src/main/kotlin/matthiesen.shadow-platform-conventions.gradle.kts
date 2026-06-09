@@ -3,9 +3,15 @@ import net.fabricmc.loom.task.RemapJarTask
 import net.fabricmc.loom.task.RemapSourcesJarTask
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.named
+import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.kotlin.dsl.getByType
 
 plugins {
     id("matthiesen.platform-resources-conventions")
+}
+
+extensions.getByType<SourceSetContainer>().named("main") {
+    resources.srcDir(rootProject.project(":common").file("src/main/resources"))
 }
 
 pluginManager.withPlugin("com.gradleup.shadow") {
