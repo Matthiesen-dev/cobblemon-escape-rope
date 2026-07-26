@@ -37,6 +37,7 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
     public void initialize() {
         super.initialize();
         SERVER_CONFIG_MANAGER.loadConfig();
+
         ItemRegistry.initialize();
         CreativeTabRegistry.initialize();
 
