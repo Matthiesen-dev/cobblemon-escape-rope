@@ -7,6 +7,8 @@ import dev.matthiesen.cobblemon_escape_rope.common.registry.ItemRegistry;
 import dev.matthiesen.libs.faststats.Token;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
+import dev.matthiesen.matthiesen_core.common.api.events.server.PlayerEvent;
+import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
 import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -35,11 +37,15 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
     public void initialize() {
         super.initialize();
         SERVER_CONFIG_MANAGER.loadConfig();
+        ItemRegistry.initialize();
+        CreativeTabRegistry.initialize();
 
-        ItemRegistry.init();
-        CreativeTabRegistry.init();
+        PlatformEvents.SERVER_RELOAD.subscribe(this::onServerReload);
+        PlatformEvents.SERVER_STOPPING.subscribe(this::onServerStopping);
+        PlatformEvents.SERVER_END_TICK.subscribe(this::onServerEndTick);
+        PlatformEvents.PLAYER_END_TICK.subscribe(this::onPlayerEndTick);
 
-        registerEventSubscriptions();
+        createInfoLog("Initialized Cobblemon Escape Rope");
     }
 
     @Override
@@ -49,63 +55,6 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
 
     public EscapeRopeServerConfig getServerConfig() {
         return SERVER_CONFIG_MANAGER.getConfig();
-    }
-
-    public void registerEventSubscriptions() {
-        PlatformEvents.SERVER_RELOAD.subscribe(event -> {
-            SERVER_CONFIG_MANAGER.loadConfig();
-            createInfoLog("Server config reloaded");
-        });
-
-        PlatformEvents.SERVER_STOPPING.subscribe(event ->
-                PlayerCoordsData.getCoordsData().setDirty());
-
-        PlatformEvents.SERVER_END_TICK.subscribe(event -> {
-            MinecraftServer server = event.server();
-            var config = INSTANCE.getServerConfig();
-            int saveTicks = config.serverSaveTicks;
-
-            PlayerCoordsData coordsData = PlayerCoordsData.getCoordsData();
-            boolean anyChanged = false;
-
-            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                PlayerCoordsData.DataStoreEntry data = coordsData.getData(player.getUUID());
-
-                if (data.cooldown > 0) {
-                    // Re-sync item cooldown if it was lost (e.g. after relog).
-                    if (!player.getCooldowns().isOnCooldown(ItemRegistry.ESCAPE_ROPE.get())) {
-                        player.getCooldowns().addCooldown(ItemRegistry.ESCAPE_ROPE.get(), data.cooldown);
-                    }
-                    data.cooldown--;
-                    coordsData.setDataInMemory(player.getUUID(), data);
-                    anyChanged = true;
-                }
-            }
-
-            // Flush in-memory changes to disk on the configured interval.
-            if (anyChanged && server.getTickCount() % saveTicks == 0) {
-                coordsData.setDirty();
-            }
-        });
-
-         PlatformEvents.PLAYER_END_TICK.subscribe(event -> {
-             ServerPlayer player = event.player();
-             Level playerLevel = player.level();
-             String currentDimension = playerLevel.dimension().location().toString();
-
-             if (playerLevel.isClientSide || player.tickCount % 20 != 0 || !playerLevel.dimensionType().hasSkyLight()) return;
-
-             if (playerLevel.canSeeSky(player.blockPosition()) && !INSTANCE.isDimensionBlacklisted(currentDimension)) {
-                 BlockPos currentPos = player.blockPosition();
-                 PlayerCoordsData.DataStoreEntry data = PlayerCoordsData.getSavedPlayerData(player);
-
-                 if (!currentPos.equals(data.pos) || !currentDimension.equals(data.dimension)) {
-                     data.pos = currentPos;
-                     data.dimension = currentDimension;
-                     PlayerCoordsData.setPlayerDataInMemory(player, data);
-                 }
-             }
-         });
     }
 
     public boolean isDimensionBlacklisted(String dimensionId) {
@@ -124,5 +73,61 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
                 .filter(id -> id != null && !id.isBlank())
                 .map(id -> id.trim().toLowerCase(Locale.ROOT))
                 .anyMatch(normalizedDimensionId::equals);
+    }
+
+    public void onServerReload(ServerEvent.Reload event) {
+        SERVER_CONFIG_MANAGER.loadConfig();
+        createInfoLog("Server config reloaded");
+    }
+
+    public void onServerStopping(ServerEvent.Stopping event) {
+        PlayerCoordsData.getCoordsData().setDirty();
+    }
+
+    public void onServerEndTick(ServerEvent.EndTick event) {
+        MinecraftServer server = event.server();
+        var config = INSTANCE.getServerConfig();
+        int saveTicks = config.serverSaveTicks;
+
+        PlayerCoordsData coordsData = PlayerCoordsData.getCoordsData();
+        boolean anyChanged = false;
+
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            PlayerCoordsData.DataStoreEntry data = coordsData.getData(player.getUUID());
+
+            if (data.cooldown > 0) {
+                // Re-sync item cooldown if it was lost (e.g. after relog).
+                if (!player.getCooldowns().isOnCooldown(ItemRegistry.ESCAPE_ROPE.get())) {
+                    player.getCooldowns().addCooldown(ItemRegistry.ESCAPE_ROPE.get(), data.cooldown);
+                }
+                data.cooldown--;
+                coordsData.setDataInMemory(player.getUUID(), data);
+                anyChanged = true;
+            }
+        }
+
+        // Flush in-memory changes to disk on the configured interval.
+        if (anyChanged && server.getTickCount() % saveTicks == 0) {
+            coordsData.setDirty();
+        }
+    }
+
+    public void onPlayerEndTick(PlayerEvent.EndTick event) {
+        ServerPlayer player = event.player();
+        Level playerLevel = player.level();
+        String currentDimension = playerLevel.dimension().location().toString();
+
+        if (playerLevel.isClientSide || player.tickCount % 20 != 0 || !playerLevel.dimensionType().hasSkyLight()) return;
+
+        if (playerLevel.canSeeSky(player.blockPosition()) && !INSTANCE.isDimensionBlacklisted(currentDimension)) {
+            BlockPos currentPos = player.blockPosition();
+            PlayerCoordsData.DataStoreEntry data = PlayerCoordsData.getSavedPlayerData(player);
+
+            if (!currentPos.equals(data.pos) || !currentDimension.equals(data.dimension)) {
+                data.pos = currentPos;
+                data.dimension = currentDimension;
+                PlayerCoordsData.setPlayerDataInMemory(player, data);
+            }
+        }
     }
 }

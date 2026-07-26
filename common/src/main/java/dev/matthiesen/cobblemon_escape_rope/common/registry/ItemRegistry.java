@@ -14,11 +14,11 @@ public final class ItemRegistry extends AbstractItemRegistry {
         super(CobblemonEscapeRope.MOD_ID);
     }
 
+    public static void initialize() {}
+
     public static final Supplier<Item> ESCAPE_ROPE;
 
     static {
         ESCAPE_ROPE = INSTANCE.register("escape_rope", EscapeRopeItem::new);
     }
-
-    public static void init() {}
 }

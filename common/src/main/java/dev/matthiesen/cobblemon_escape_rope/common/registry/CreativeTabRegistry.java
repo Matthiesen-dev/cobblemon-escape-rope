@@ -12,9 +12,15 @@ import java.util.function.Supplier;
 
 public final class CreativeTabRegistry extends AbstractCreativeModeTabRegistry {
     private static final CreativeTabRegistry INSTANCE = new CreativeTabRegistry();
+    public static final ResourceKey<CreativeModeTab> TOOLS_AND_UTILITIES = ResourceKey.create(Registries.CREATIVE_MODE_TAB,
+            ResourceLocation.withDefaultNamespace("tools_and_utilities"));
 
     private CreativeTabRegistry() {
         super(CobblemonEscapeRope.MOD_ID);
+    }
+
+    public static void initialize() {
+        INSTANCE.registerTabItemAugmentation(TOOLS_AND_UTILITIES, ItemRegistry.ESCAPE_ROPE);
     }
 
     public static final Supplier<CreativeModeTab> ESCAPE_ROPE_ITEMS_TAB;
@@ -28,12 +34,5 @@ public final class CreativeTabRegistry extends AbstractCreativeModeTabRegistry {
                         output.accept(ItemRegistry.ESCAPE_ROPE.get())))
                 .build()
         );
-    }
-
-    public static final ResourceKey<CreativeModeTab> TOOLS_AND_UTILITIES = ResourceKey.create(Registries.CREATIVE_MODE_TAB,
-            ResourceLocation.withDefaultNamespace("tools_and_utilities"));
-
-    public static void init() {
-        INSTANCE.registerTabItemAugmentation(TOOLS_AND_UTILITIES, ItemRegistry.ESCAPE_ROPE);
     }
 }
