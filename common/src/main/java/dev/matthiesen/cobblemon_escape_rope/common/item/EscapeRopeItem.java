@@ -39,7 +39,7 @@ public final class EscapeRopeItem extends Item {
     private static int teleportSearchRadius() { return getConfig().escapeRopeItemConfig.teleportSafeSearchRadius; }
 
     public EscapeRopeItem() {
-        super(new Properties().stacksTo(16)
+        super(new Properties().stacksTo(1)
                 .component(
                         DataComponents.CUSTOM_NAME,
                         Component.translatable("item.cobblemon_escape_rope.escape_rope")
