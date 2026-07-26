@@ -1,13 +1,11 @@
-package dev.matthiesen.common.cobblemon_escape_rope.config;
+package dev.matthiesen.cobblemon_escape_rope.common.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CobblemonEscapeRopeConfig {
+public final class EscapeRopeServerConfig {
     @SerializedName("serverSaveTicks")
     public int serverSaveTicks = 20;
 
@@ -30,10 +28,4 @@ public final class CobblemonEscapeRopeConfig {
         @SerializedName("blacklistedDimensions")
         public List<String> blacklistedDimensions = new ArrayList<>();
     }
-
-    @SuppressWarnings("unused")
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
 }
