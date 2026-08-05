@@ -1,6 +1,6 @@
 package dev.matthiesen.cobblemon_escape_rope.common;
 
-import dev.matthiesen.cobblemon_escape_rope.common.config.EscapeRopeServerConfig;
+import dev.matthiesen.cobblemon_escape_rope.common.config.EscapeRopeConfig;
 import dev.matthiesen.cobblemon_escape_rope.common.data.PlayerCoordsData;
 import dev.matthiesen.cobblemon_escape_rope.common.registry.CreativeTabRegistry;
 import dev.matthiesen.cobblemon_escape_rope.common.registry.ItemRegistry;
@@ -9,7 +9,7 @@ import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
 import dev.matthiesen.matthiesen_core.common.api.events.server.PlayerEvent;
 import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
-import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
+import dev.matthiesen.matthiesen_core.common.api.platform.loader.ModConfigType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,9 +26,6 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
 
     public static final CobblemonEscapeRope INSTANCE = new CobblemonEscapeRope();
 
-    private static final ConfigManager<EscapeRopeServerConfig> SERVER_CONFIG_MANAGER =
-            new ConfigManager<>(EscapeRopeServerConfig.class, "server", MOD_ID);
-
     public CobblemonEscapeRope() {
         super(MOD_ID, MOD_NAME);
     }
@@ -36,12 +33,11 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
     @Override
     public void initialize() {
         super.initialize();
-        SERVER_CONFIG_MANAGER.loadConfig();
+        registerModConfig(MOD_ID, ModConfigType.SERVER, EscapeRopeConfig.SERVER_SPEC, "cobblemon_escape_rope/server.toml");
 
         ItemRegistry.initialize();
         CreativeTabRegistry.initialize();
 
-        PlatformEvents.SERVER_RELOAD.subscribe(this::onServerReload);
         PlatformEvents.SERVER_STOPPING.subscribe(this::onServerStopping);
         PlatformEvents.SERVER_END_TICK.subscribe(this::onServerEndTick);
         PlatformEvents.PLAYER_END_TICK.subscribe(this::onPlayerEndTick);
@@ -54,17 +50,12 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
         return METRICS_TOKEN;
     }
 
-    public EscapeRopeServerConfig getServerConfig() {
-        return SERVER_CONFIG_MANAGER.getConfig();
-    }
-
     public boolean isDimensionBlacklisted(String dimensionId) {
-        var config = this.getServerConfig();
-        if (dimensionId == null || dimensionId.isBlank() || config == null || config.escapeRopeItemConfig == null) {
+        if (dimensionId == null || dimensionId.isBlank()) {
             return false;
         }
 
-        List<String> blacklist = config.escapeRopeItemConfig.blacklistedDimensions;
+        List<? extends String> blacklist = EscapeRopeConfig.SERVER_CONFIG.escaperope_blacklistedWorlds.get();
         if (blacklist == null || blacklist.isEmpty()) {
             return false;
         }
@@ -76,19 +67,12 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
                 .anyMatch(normalizedDimensionId::equals);
     }
 
-    public void onServerReload(ServerEvent.Reload event) {
-        SERVER_CONFIG_MANAGER.loadConfig();
-        createInfoLog("Server config reloaded");
-    }
-
     public void onServerStopping(ServerEvent.Stopping event) {
         PlayerCoordsData.getCoordsData().setDirty();
     }
 
     public void onServerEndTick(ServerEvent.EndTick event) {
         MinecraftServer server = event.server();
-        var config = INSTANCE.getServerConfig();
-        int saveTicks = config.serverSaveTicks;
 
         PlayerCoordsData coordsData = PlayerCoordsData.getCoordsData();
         boolean anyChanged = false;
@@ -97,17 +81,18 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
             PlayerCoordsData.DataStoreEntry data = coordsData.getData(player.getUUID());
 
             if (data.cooldown > 0) {
+                data.cooldown--;
                 // Re-sync item cooldown if it was lost (e.g. after relog).
                 if (!player.getCooldowns().isOnCooldown(ItemRegistry.ESCAPE_ROPE.get())) {
                     player.getCooldowns().addCooldown(ItemRegistry.ESCAPE_ROPE.get(), data.cooldown);
                 }
-                data.cooldown--;
                 coordsData.setDataInMemory(player.getUUID(), data);
                 anyChanged = true;
             }
         }
 
         // Flush in-memory changes to disk on the configured interval.
+        int saveTicks = EscapeRopeConfig.SERVER_CONFIG.serverSaveTicks.getAsInt();
         if (anyChanged && server.getTickCount() % saveTicks == 0) {
             coordsData.setDirty();
         }

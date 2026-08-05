@@ -12,7 +12,8 @@ kotlin-for-forge = "5.10.0"
 cobblemon = "1.7.3+1.21.1"
 junit = "5.1.0"
 publish = "0.35.0"
-matthiesen_core = "1.0.0-beta.7"
+matthiesen_core = "1.0.0-beta.37"
+forge-config-api-port = "21.1.6"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -40,10 +41,14 @@ junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", ver
 matthiesen-core-common = { group = "dev.matthiesen", name = "matthiesen-core-common", version.ref = "matthiesen_core" }
 matthiesen-core-fabric = { group = "dev.matthiesen", name = "matthiesen-core-fabric", version.ref = "matthiesen_core" }
 matthiesen-core-neoforge = { group = "dev.matthiesen", name = "matthiesen-core-neoforge", version.ref = "matthiesen_core" }
+forge-config-api-port-common = { group = "fuzs.forgeconfigapiport", name = "forgeconfigapiport-common-neoforgeapi", version.ref = "forge-config-api-port" }
+forge-config-api-port-fabric = { group = "fuzs.forgeconfigapiport", name = "forgeconfigapiport-fabric", version.ref = "forge-config-api-port" }
 
 [bundles]
+commonCompileOnly = ["forge-config-api-port-common"]
 commonModImplementation = ["cobblemon-common", "matthiesen-core-common"]
 
+fabricModRuntimeOnly = ["forge-config-api-port-fabric"]
 fabricModImplementation = ["fabric-loader", "fabric-api", "fabric-language-kotlin"]
 fabricModImplementationNoTransitive = ["cobblemon-fabric", "matthiesen-core-fabric"]
 

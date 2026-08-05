@@ -2,7 +2,7 @@ package dev.matthiesen.cobblemon_escape_rope.common.item;
 
 import com.cobblemon.mod.common.CobblemonSounds;
 import dev.matthiesen.cobblemon_escape_rope.common.CobblemonEscapeRope;
-import dev.matthiesen.cobblemon_escape_rope.common.config.EscapeRopeServerConfig;
+import dev.matthiesen.cobblemon_escape_rope.common.config.EscapeRopeConfig;
 import dev.matthiesen.cobblemon_escape_rope.common.data.PlayerCoordsData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -31,12 +31,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class EscapeRopeItem extends Item {
-    private static EscapeRopeServerConfig getConfig() {
-        return CobblemonEscapeRope.INSTANCE.getServerConfig();
-    }
-    private static int cooldownTicks() { return 20 * getConfig().escapeRopeItemConfig.cooldownInSeconds; }
-    private static int useDuration() { return 20 * getConfig().escapeRopeItemConfig.useTimeInSeconds; }
-    private static int teleportSearchRadius() { return getConfig().escapeRopeItemConfig.teleportSafeSearchRadius; }
+    private static int cooldownTicks() { return 20 * EscapeRopeConfig.SERVER_CONFIG.escaperope_cooldownSeconds.getAsInt(); }
+    private static int useDuration() { return 20 * EscapeRopeConfig.SERVER_CONFIG.escaperope_useTimeSeconds.getAsInt(); }
+    private static int teleportSearchRadius() { return EscapeRopeConfig.SERVER_CONFIG.escaperope_safeSearchRadius.getAsInt(); }
 
     public EscapeRopeItem() {
         super(new Properties().stacksTo(1)
@@ -125,7 +122,7 @@ public final class EscapeRopeItem extends Item {
                 player.getCooldowns().addCooldown(this, cooldownTicks());
 
                 if (!player.getAbilities().instabuild &&
-                        getConfig().escapeRopeItemConfig.consumeOnUse) stack.shrink(1);
+                        EscapeRopeConfig.SERVER_CONFIG.escaperope_consumeOnUse.getAsBoolean()) stack.shrink(1);
             } else {
                 String error = !level.dimensionType().hasSkyLight()
                         ? "cobblemon_escape_rope.msg.wrong_dimension"

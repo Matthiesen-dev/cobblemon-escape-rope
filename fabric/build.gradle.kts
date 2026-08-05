@@ -15,6 +15,8 @@ val shadowCommon: Configuration by configurations.creating
 dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
+
+    modRuntimeOnly(libs.bundles.fabricModRuntimeOnly)
     modImplementation(libs.bundles.fabricModImplementation)
     modImplementation(libs.bundles.fabricModImplementationNoTransitive) { isTransitive = false }
 

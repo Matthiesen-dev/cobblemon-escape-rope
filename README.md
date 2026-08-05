@@ -19,6 +19,8 @@ A lightweight Cobblemon add-on that adds an **Escape Rope** item for returning t
 
 - [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
 - [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 ## Docs
 
