@@ -11,6 +11,8 @@ architectury {
 dependencies {
     minecraft(libs.minecraft)
     mappings(loom.officialMojangMappings())
+
+    compileOnly(libs.bundles.commonCompileOnly)
     modImplementation(libs.bundles.commonModImplementation) { isTransitive = false }
 
     testImplementation(libs.junit.api)

@@ -8,5 +8,32 @@
   "cobblemon_escape_rope.msg.can_not_see_sky": "The rope cannot find a path to the sky!",
   "cobblemon_escape_rope.msg.already_can_see_sky": "The rope goes slack. You are already under open sky.",
   "cobblemon_escape_rope.msg.no_safe_destination": "The rope frays... there is no safe place to emerge nearby.",
-  "cobblemon_escape_rope.msg.dimension_blacklisted": "This dimension is blacklisted for Escape Rope usage."
+  "cobblemon_escape_rope.msg.dimension_blacklisted": "This dimension is blacklisted for Escape Rope usage.",
+
+  "cobblemon_escape_rope.configuration.title": "Cobblemon Escape Rope Configuration",
+  "cobblemon_escape_rope.configuration.section.cobblemon.escape.rope.client.toml": "Client Configuration",
+  "cobblemon_escape_rope.configuration.section.cobblemon.escape.rope.client.toml.title": "Client Configuration",
+  "cobblemon_escape_rope.configuration.section.cobblemon.escape.rope.server.toml": "Server Configuration",
+  "cobblemon_escape_rope.configuration.section.cobblemon.escape.rope.server.toml.title": "Server Configuration",
+
+  "cobblemon_escape_rope.configuration.generalConfig": "General Configuration",
+  "cobblemon_escape_rope.configuration.generalConfig.button": "Edit",
+  "cobblemon_escape_rope.configuration.generalConfig.tooltip": "General configuration options for Cobblemon Escape Rope.",
+  "cobblemon_escape_rope.configuration.serverSaveTicks": "Server Save Ticks",
+  "cobblemon_escape_rope.configuration.serverSaveTicks.tooltip": "How often the server saves the Escape Rope data to disk. Lower values may cause more lag spikes, but higher values may cause data loss if the server crashes.",
+
+  "cobblemon_escape_rope.configuration.escapeRopeItemConfig": "Escape Rope Item Configuration",
+  "cobblemon_escape_rope.configuration.escapeRopeItemConfig.button": "Edit",
+  "cobblemon_escape_rope.configuration.escapeRopeItemConfig.tooltip": "Configuration options for the Escape Rope item.",
+  "cobblemon_escape_rope.configuration.cooldownSeconds": "Cooldown Seconds",
+  "cobblemon_escape_rope.configuration.cooldownSeconds.tooltip": "The number of seconds a player must wait before using the Escape Rope again after it has been used.",
+  "cobblemon_escape_rope.configuration.useTimeSeconds": "Use Time Seconds",
+  "cobblemon_escape_rope.configuration.useTimeSeconds.tooltip": "The number of seconds it takes to use the Escape Rope. During this time, the player must remain still and not take damage, or the Escape Rope will fail to activate.",
+  "cobblemon_escape_rope.configuration.safeSearchRadius": "Safe Search Radius",
+  "cobblemon_escape_rope.configuration.safeSearchRadius.tooltip": "The radius in blocks around the player that the Escape Rope will search for a safe location to teleport to. A larger radius may take longer to find a safe location, but will be more likely to find one.",
+  "cobblemon_escape_rope.configuration.consumeOnUse": "Consume on Use",
+  "cobblemon_escape_rope.configuration.consumeOnUse.tooltip": "Whether the Escape Rope item should be consumed (removed from the player's inventory) when used. If disabled, the Escape Rope will not be consumed, but will still have a cooldown.",
+  "cobblemon_escape_rope.configuration.blacklistedWorlds": "Dimension Blacklist",
+  "cobblemon_escape_rope.configuration.blacklistedWorlds.button": "Edit",
+  "cobblemon_escape_rope.configuration.blacklistedWorlds.tooltip": "A list of dimension IDs where the Escape Rope cannot be used. Players will receive a message if they try to use the Escape Rope in a blacklisted dimension."
 }
