@@ -38,7 +38,6 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
         ItemRegistry.initialize();
         CreativeTabRegistry.initialize();
 
-        PlatformEvents.SERVER_STOPPING.subscribe(this::onServerStopping);
         PlatformEvents.SERVER_END_TICK.subscribe(this::onServerEndTick);
         PlatformEvents.PLAYER_END_TICK.subscribe(this::onPlayerEndTick);
 
@@ -65,10 +64,6 @@ public final class CobblemonEscapeRope extends AbstractCommonMod {
                 .filter(id -> id != null && !id.isBlank())
                 .map(id -> id.trim().toLowerCase(Locale.ROOT))
                 .anyMatch(normalizedDimensionId::equals);
-    }
-
-    public void onServerStopping(ServerEvent.Stopping event) {
-        PlayerCoordsData.getCoordsData().setDirty();
     }
 
     public void onServerEndTick(ServerEvent.EndTick event) {
