@@ -1,14 +1,12 @@
 package dev.matthiesen.cobblemon_escape_rope.common;
 
+import dev.faststats.Token;
 import dev.matthiesen.cobblemon_escape_rope.common.config.EscapeRopeConfig;
 import dev.matthiesen.cobblemon_escape_rope.common.data.PlayerCoordsData;
-import dev.matthiesen.cobblemon_escape_rope.common.registry.CreativeTabRegistry;
-import dev.matthiesen.cobblemon_escape_rope.common.registry.ItemRegistry;
-import dev.matthiesen.libs.faststats.Token;
+import dev.matthiesen.cobblemon_escape_rope.common.registry.*;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
-import dev.matthiesen.matthiesen_core.common.api.events.server.PlayerEvent;
-import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
+import dev.matthiesen.matthiesen_core.common.api.events.server.*;
 import dev.matthiesen.matthiesen_core.common.api.platform.loader.ModConfigType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;

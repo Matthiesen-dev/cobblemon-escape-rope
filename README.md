@@ -35,6 +35,7 @@ Documentation for this mod can be found at [mods.matthiesen.dev](https://mods.ma
 | 1.21.1            | 1.2.7+                  | 1.7.3             | 1.4.0+      |
 | 1.21.1            | 1.2.7+                  | 1.8.x+            | 1.5.0+      |
 | 1.21.1            | 1.3.0+                  | 1.8.x+            | 1.6.0+      |
+| 1.21.1            | 2.0.0+                  | 1.8.x+            | 1.7.0+      |
 
 > Before `v1.3.0` This mod relied on [Matthiesen Lib](https://modrinth.com/mod/matthiesen-lib) for its APIs, which has since been replaced by [Matthiesen Core](https://modrinth.com/mod/matthiesen-core).
 
@@ -46,7 +47,7 @@ how this mod is being used and improve it over time. You can learn more about th
 
 You can also view the data collected by this mod on the [FastStats: Cobblemon Escape Rope](https://faststats.dev/project/cobblemon-escape-rope) page.
 
-To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/faststats/config.properties` file.
 
 ## License
 
